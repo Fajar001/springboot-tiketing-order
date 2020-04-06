@@ -87,4 +87,15 @@ public class TicketServiceImpl implements TicketService{
 			return null;
 		}	
 	}
+
+	@Override
+	public List<Ticket> trx(String user, String pass) throws Exception {
+		// TODO Auto-generated method stub
+		if (userService.validuser(user, pass) == true) {
+			return ticketDao.trx();
+		}
+		else {
+			return null;
+		}
+	}
 }

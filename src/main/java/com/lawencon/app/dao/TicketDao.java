@@ -11,4 +11,5 @@ public interface TicketDao {
 	abstract String delete(int id) throws Exception;
 	abstract int  updatejpa(int id, int jumPenumpang) throws Exception;
 	abstract List<Ticket> joinAll() throws Exception;
+	abstract List<Ticket> trx() throws Exception;
 }

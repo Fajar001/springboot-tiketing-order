@@ -11,4 +11,5 @@ public interface TicketService {
 	abstract String delete(int id, String user, String pass) throws Exception;
 	abstract int updatejpa(int id, int jumPenumpang, String user, String pass) throws Exception;
 	abstract List<Ticket> joinAll(String user, String pass) throws Exception;
+	abstract List<Ticket> trx(String user, String pass) throws Exception;
 }

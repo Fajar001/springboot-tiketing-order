@@ -63,6 +63,19 @@ public class TicketController extends BaseController{
 		return new ResponseEntity<>(listTicket, HttpStatus.OK);
 	}
 	
+	@GetMapping("/Home/trx")
+	public ResponseEntity<List<?>> getTrx(@RequestHeader("Authorization") String user) {
+		List<Ticket> listTicket = new ArrayList<>();
+		try {
+			String[] auth = authUser(user).split(":");
+			listTicket = ticketService.trx(auth[0], auth[1]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(listTicket, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(listTicket, HttpStatus.OK);
+	}
+	
 	@PostMapping("/Home/insert")
 	public ResponseEntity<?> getInsert(@RequestBody String content, @RequestHeader("Authorization") String user) {
 		try {

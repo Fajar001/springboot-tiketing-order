@@ -50,4 +50,10 @@ public class TicketDaoImpl implements TicketDao{
 		// TODO Auto-generated method stub
 		return ticketRepo.joinAll();
 	}
+
+	@Override
+	public List<Ticket> trx() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

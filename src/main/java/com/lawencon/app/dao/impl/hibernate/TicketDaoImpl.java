@@ -65,10 +65,25 @@ public class TicketDaoImpl extends BaseHibernate implements TicketDao{
 				"	t.nama_penumpang, t.jumlah_penumpang, t.kota_asal, \r\n" + 
 				"	t.kota_tujuan, t.voucher as banyak_voucher, t.pilih_tanggal as tanggal_berangkat, t.no_kursi,\r\n" + 
 				"	tc.jenis_ticket, tc.deskripsi,\r\n" + 
-				"	h.harga, h.diskon \r\n" + 
+				"	h.harga as harga_awal, h.diskon \r\n" + 
 				"from \r\n" + 
 				"	ticket_category tc \r\n" + 
 				"	join ticket t on t.cat_id = tc.cat_id \r\n" + 
+				"	join harga h on h.cat_id = tc.cat_id");
+		return q.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ticket> trx() throws Exception {
+		// TODO Auto-generated method stub
+		Query q = em.createNativeQuery("select \r\n" + 
+				"	t.nama_penumpang, t.jumlah_penumpang, t.voucher,\r\n" + 
+				"	tc.jenis_ticket, tc.deskripsi,\r\n" + 
+				"	h.harga as harga_awal, h.diskon,\r\n" + 
+				"	(t.jumlah_penumpang*h.harga-h.diskon) as Total_harga\r\n" + 
+				"from \r\n" + 
+				"	ticket t join ticket_category tc on t.cat_id = tc.cat_id \r\n" + 
 				"	join harga h on h.cat_id = tc.cat_id");
 		return q.getResultList();
 	}
