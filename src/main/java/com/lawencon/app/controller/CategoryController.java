@@ -6,7 +6,6 @@ package com.lawencon.app.controller;
  */
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +25,16 @@ import com.lawencon.app.service.TicketCategoryService;
 
 @RestController
 @RequestMapping("/tiket")
-public class CategoryController extends BaseController{
+public class CategoryController extends BaseController<TicketCategory>{
 	
 	@Autowired
 	private TicketCategoryService catService;
-	
-	@Override
-	String authUser(String user) throws Exception {
-		byte[] decodeBytes = Base64.getDecoder().decode(user);
-        String decodeString = new String(decodeBytes);
-        return decodeString;
-	}
 	
 	@GetMapping("/category")
 	public ResponseEntity<List<TicketCategory>> getListCategory(@RequestHeader("Authorization") String user) {
 		List<TicketCategory> listKendaraan = new ArrayList<>();
 		try {
-			String[] auth = authUser(user).split(":");
+			String[] auth = super.authUser(user);
 			listKendaraan = catService.findAll(auth[0], auth[1]);
 		} catch (Exception e) {
 			return new ResponseEntity<>(listKendaraan, HttpStatus.OK);
@@ -53,8 +45,8 @@ public class CategoryController extends BaseController{
 	@PostMapping("/category/insert")
 	public ResponseEntity<?> getInsert(@RequestBody String content, @RequestHeader("Authorization") String user) {
 		try {
-			String[] auth = authUser(user).split(":");
-			TicketCategory category = new ObjectMapper().readValue(content, TicketCategory.class);
+			String[] auth = super.authUser(user);
+			TicketCategory category = readValue(content, TicketCategory.class);
 			catService.insert(category, auth[0], auth[1]);
 			return new ResponseEntity<>("Berhasil Insert Data", HttpStatus.OK);
 		} catch (Exception e) {
@@ -66,7 +58,7 @@ public class CategoryController extends BaseController{
 	@PostMapping("/category/update/{id}/{jenis}")
 	public ResponseEntity<?> getUpdate(@PathVariable("id") int id, @PathVariable("jenis") String jenis, @RequestHeader("Authorization") String user) {
 		try {
-			String[] auth = authUser(user).split(":");
+			String[] auth = super.authUser(user);
 			catService.update(id, jenis, auth[0], auth[1]);
 			return new ResponseEntity<>("Berhasil Update Data", HttpStatus.OK);
 		} catch (Exception e) {
@@ -78,7 +70,7 @@ public class CategoryController extends BaseController{
 	@PostMapping("/category/updatejpa/{id}/{jenis}")
 	public ResponseEntity<?> getUpdatejpa(@PathVariable("id") int id, @PathVariable("jenis") String jenis, @RequestHeader("Authorization") String user) {
 		try {
-			String[] auth = authUser(user).split(":");
+			String[] auth = super.authUser(user);
 			catService.updatejpa(id, jenis, auth[0], auth[1]);
 			return new ResponseEntity<>("Berhasil Update Data", HttpStatus.OK);
 		} catch (Exception e) {
@@ -90,7 +82,7 @@ public class CategoryController extends BaseController{
 	@PostMapping("/category/delete/{id}")
 	public ResponseEntity<?> getDelete(@PathVariable("id") int id, @RequestHeader("Authorization") String user) {
 		try {
-			String[] auth = authUser(user).split(":");
+			String[] auth = super.authUser(user);
 			catService.delete(id, auth[0], auth[1]);
 			return new ResponseEntity<>("Berhasil Hapus Data", HttpStatus.OK);
 		} catch (Exception e) {
