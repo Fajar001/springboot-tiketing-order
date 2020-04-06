@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class BaseController<T> {
-//	abstract String authUser(String user) throws Exception;
 	
 	public String[] authUser(String user){
 		byte[] decodeBytes = Base64.getDecoder().decode(user);
